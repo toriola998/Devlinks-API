@@ -2,15 +2,15 @@ require('dotenv').config();
 require('express-async-errors');
 
 const express = require('express');
+
 const app = express();
-const connectDB = require('./db/connect');
 
 // packages
 const cors = require('cors');
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-
+const connectDB = require('./db/connect');
 
 app.set('trust proxy', 1);
 app.use(
