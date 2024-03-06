@@ -10,6 +10,7 @@ const cors = require('cors');
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const authRouter = require('./routes/auth');
 const connectDB = require('./db/connect');
 
 app.set('trust proxy', 1);
@@ -23,6 +24,9 @@ app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
+
+// routes
+app.use('/api/v1/auth', authRouter);
 
 const port = process.env.PORT || 5000;
 const start = async () => {
