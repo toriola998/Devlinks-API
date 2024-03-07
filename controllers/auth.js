@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
-const { BadRequestError, UnauthenticatedError } = require('../errors/index');
+const { BadRequestError, UnauthenticatedError, NotFoundError } = require('../errors/index');
 
 const register = async (req, res) => {
    const user = await User.create({ ...req.body });
@@ -34,10 +34,30 @@ const login = async (req, res) => {
       msg: 'OK',
       email: user.email,
       token,
+      links: user.links,
    });
+};
+
+const updateUser = async (req, res) => {
+   const { id } = req.params;
+   // const userId = id.split('@')[0];
+
+   // res.send(id, userId);
+
+   const user = await User.findOneAndUpdate(
+      { email: id },
+      req.body,
+      { new: true, runValidators: true },
+   );
+
+   if (!user) {
+      throw new NotFoundError('No user with this email');
+   }
+   res.status(StatusCodes.OK).json({ msg: 'OK', user });
 };
 
 module.exports = {
    register,
    login,
+   updateUser,
 };
