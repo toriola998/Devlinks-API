@@ -10,7 +10,10 @@ const cors = require('cors');
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+
 const authRouter = require('./routes/auth');
+const userRouter = require('./routes/user');
+
 const connectDB = require('./db/connect');
 
 app.set('trust proxy', 1);
@@ -25,14 +28,14 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 
+const authenticateUser = require('./middleware/authentication');
+const errorHandlerMiddleware = require('./middleware/error-handler');
+
 // routes
 app.use('/api/v1/auth', authRouter);
-// add to all protectec route
-// const authenticateUser = require('./middleware/authentication');
-// const authorizeUser = require('./middleware/authorize');
-// const errorHandlerMiddleware = require('./middleware/error-handler');
-// app.use(errorHandlerMiddleware);
+app.use('/api/v1/user', authenticateUser, userRouter);
 
+app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 5000;
 const start = async () => {
    try {
