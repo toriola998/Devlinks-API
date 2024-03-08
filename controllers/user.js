@@ -1,12 +1,18 @@
+require('dotenv').config();
+const cloudinary = require('cloudinary').v2;
 const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
 const { NotFoundError } = require('../errors/index');
 
+console.log(cloudinary.config().cloud_name);
+
 const updateUser = async (req, res) => {
    const { id } = req.params;
-   // const userId = id.split('@')[0];
 
-   // res.send(id, userId);
+   if (req.body.photo) {
+      const photoResult = await cloudinary.uploader.upload(req.body.photo);
+      req.body.photo = photoResult.secure_url;
+   }
 
    const user = await User.findOneAndUpdate(
       { email: id },
