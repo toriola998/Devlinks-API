@@ -19,26 +19,26 @@ const UserSchema = new mongoose.Schema({
    },
    links: [{
       link: { type: String },
-      platform: { 
+      platform: {
          name: String,
-         icon: String
+         icon: String,
       },
    }],
    photo: {
-      type: String
+      type: String,
    },
    firstName: {
-      type: String
+      type: String,
    },
    lastName: {
-      type: String
+      type: String,
    },
-   profileEmail:{
-      type: String
+   profileEmail: {
+      type: String,
    },
    profileColorTheme: {
-      type: String
-   }
+      type: String,
+   },
 }, { timestamps: true });
 
 UserSchema.pre('save', async function (next) {

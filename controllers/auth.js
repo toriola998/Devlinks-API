@@ -27,12 +27,10 @@ const register = async (req, res) => {
          email: user.email,
          token,
       });
-   } catch (error) {
-     // return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+   } catch {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Internal Server Error' });
    }
 };
-
 
 const login = async (req, res) => {
    const { email, password } = req.body;
@@ -61,7 +59,7 @@ const login = async (req, res) => {
       lastName: user.lastName,
       photo: user.photo,
       colorTheme: user.profileColorTheme,
-      profileEmail: user.profileEmail
+      profileEmail: user.profileEmail,
    });
 };
 

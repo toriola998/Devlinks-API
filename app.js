@@ -13,6 +13,7 @@ const xss = require('xss-clean');
 
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const userDataRouter = require('./routes/user-data');
 
 const connectDB = require('./db/connect');
 
@@ -34,6 +35,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', authenticateUser, userRouter);
+app.use('/api/v1/getUser', userDataRouter);
 
 app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 5000;
