@@ -4,8 +4,6 @@ const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
 const { NotFoundError } = require('../errors/index');
 
-console.log(cloudinary.config().cloud_name);
-
 const updateUser = async (req, res) => {
    const { id } = req.params;
 
