@@ -19,7 +19,10 @@ const UserSchema = new mongoose.Schema({
    },
    links: [{
       link: { type: String },
-      platform: { type: String },
+      platform: { 
+         name: String,
+         icon: String
+      },
    }],
    photo: {
       type: String

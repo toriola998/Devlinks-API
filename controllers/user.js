@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
-const { NotFoundError } = require('../errors/index');
+const { BadRequestError, UnauthenticatedError, NotFoundError } = require('../errors/index');
 
 const updateUser = async (req, res) => {
    const { id } = req.params;
@@ -11,7 +11,7 @@ const updateUser = async (req, res) => {
    const user = await User.findOneAndUpdate(
       { email: id },
       req.body,
-      { new: true, runValidators: true },
+      { new: true, runValidators: true, select: '-password' },
    );
 
    if (!user) {
