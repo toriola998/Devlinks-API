@@ -7,21 +7,26 @@ const { NotFoundError } = require('../errors/index');
 const updateUser = async (req, res) => {
    const { id } = req.params;
 
-   if (req.body.photo) {
-      const photoResult = await cloudinary.uploader.upload(req.body.photo);
-      req.body.photo = photoResult.secure_url;
-   }
+   try {
+      if (req.body.photo) {
+         const photoResult = await cloudinary.uploader.upload(req.body.photo);
+         req.body.photo = photoResult.secure_url;
+      }
 
-   const user = await User.findOneAndUpdate(
-      { email: id },
-      req.body,
-      { new: true, runValidators: true, select: '-password' },
-   );
+      const user = await User.findOneAndUpdate(
+         { email: id },
+         req.body,
+         { new: true, runValidators: true, select: '-password' },
+      );
 
-   if (!user) {
-      throw new NotFoundError('No user with this email');
+      if (!user) {
+         throw new NotFoundError('No user with this email');
+      }
+
+      res.status(StatusCodes.OK).json({ msg: 'OK', user });
+   } catch {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
    }
-   res.status(StatusCodes.OK).json({ msg: 'OK', user });
 };
 
 const getUser = async (req, res) => {
